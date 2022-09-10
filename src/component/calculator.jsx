@@ -23,11 +23,10 @@ const Calculator = () => {
             console.log("masuk3");
                 setCurrData(current => current.concat(keypad));
                 setComa(com => com = com + 1);
-        }else if((keypad == 'x' || keypad == '/' || keypad == '+' || keypad == '-') && (!operation || (keypad == '-' && (currData.at(currData.length - 1) == 'x' || currData.at(currData.length - 1) == '/' || currData.at(currData.length - 1) == '+' || currData.at(currData.length - 1) == '-'))) && currData.at(currData.length - 1) != '.'){ /* BUAT MASUKIN OPERASI */
+        }else if((keypad == 'x' || keypad == '/' || keypad == '+' || keypad == '-') && (!operation || (keypad == '-' && (currData.at(currData.length - 1) == 'x' || currData.at(currData.length - 1) == '/' || currData.at(currData.length - 1) == '+'))) && currData.at(currData.length - 1) != '.'){ /* BUAT MASUKIN OPERASI */
             console.log("masuk4");
-            if(currData.at(currData.length - 1) != '-')
-                setCurrData(current => current.concat(keypad));
-            if(operation == null)
+            setCurrData(current => current.concat(keypad));
+            if(operation == null && currData.at(currData.length - 1) != '-')
                 setOperation(keypad);
             if(coma == 0){
                 setComa(com => com = com + 1); // biar mengelompokkan koma bagian sebelum operasi dan sesudah operasi
@@ -42,7 +41,7 @@ const Calculator = () => {
             setOperation(keypad);
         }else if(keypad == 'Del' && currData != '0'){ /* BUAT HAPUS DATA YANG ADA 1 PER 1 "DELETE" */
             console.log("masuk6");
-            if(currData.at(currData.length - 1) == 'x' || currData.at(currData.length - 1) == '/' || currData.at(currData.length - 1) == '+' || currData.at(currData.length - 1) == '-'){
+            if(currData.at(currData.length - 1) == operation){
                 setOperation(null)
             }
             else if(currData.at(currData.length - 1) == '.'){
@@ -66,7 +65,7 @@ const Calculator = () => {
             let convert = currData.split(operation).filter((d) => d != '');
             let equals = 0;
             let convertBack = '';
-            
+            console.log(convert);
             if(operation == '-' && currData.at(0) == '-')
                 convert[0] = '-' + convert[0];
             if(operation == 'x'){
@@ -81,6 +80,7 @@ const Calculator = () => {
             equals = Math.round((equals + Number.EPSILON) * 1000)/1000
             convertBack = equals.toString();
             if(keypad != "="){
+                setOperation(keypad)   
                 convertBack = convertBack + keypad
             }else{
                 setOperation(null)   
