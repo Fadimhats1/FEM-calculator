@@ -1,0 +1,13 @@
+.key-container{
+    padding: 1.5rem;
+    border-radius: 0.5rem;
+    background-color: hsl(223, 31%, 20%);
+    display: grid;
+    gap: 1rem;
+    justify-content: center;
+    grid-template-columns: repeat(4, 4.5rem);
+}
+
+.spanMore{
+    grid-column: span 2;
+}

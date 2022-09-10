@@ -1,0 +1,10 @@
+.button-calculator{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 32px;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    cursor: pointer;
+}
+
