@@ -6,26 +6,20 @@ import { useContext, useState } from 'react';
 import { Helmet } from 'react-helmet';
 import ThemeProvider from '../context/themeContext';
 import { ThemeContext } from '../context/themeContext';
-
-const CalculatorWrapper = () => {
-    return (
-        <ThemeProvider>
-            <Calculator />
-        </ThemeProvider>
-    );
-}
+import { useEffect } from 'react';
 
 const Calculator = () => {
-    const theme = useContext(ThemeContext);
     const [currData, setCurrData] = useState('0');
     const [operation, setOperation] = useState(null);
     const [coma, setComa] = useState(0);
+    useEffect(()=>{
 
+    })
     return (
         <div className="calculator-body">
-            <Helmet>
+            {/* <Helmet>
                 <style>{"body{ background-color: " + theme.selectedTheme.mainBg + "}"}</style>
-            </Helmet>
+            </Helmet> */}
             <HeadSection />
             <ScreenSection number={currData} />
             <KeySection click={keypadHandle} />
@@ -119,4 +113,4 @@ const Calculator = () => {
     }
 }
 
-export default CalculatorWrapper;
+export default Calculator;
