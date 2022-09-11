@@ -1,7 +1,7 @@
 import React, { useContext } from 'react'
 import ThemeProvider, { ThemeContext } from './context/themeContext'
 import Calculator from './component/calculator'
-
+import './App.css'
 
 const App = () => {
     const theme = useContext(ThemeContext);

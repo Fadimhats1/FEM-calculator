@@ -1,0 +1,13 @@
+@media screen and (max-width: 446px) {
+    .calculator-body{
+      width: 20rem;
+    }
+    .button-calculator{
+        font-size: 24px;
+    }
+    .key-container{
+      grid-template-columns: repeat(4, 3.5rem);
+    }
+  }
+  
+  
