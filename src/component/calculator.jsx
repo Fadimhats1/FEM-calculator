@@ -2,12 +2,35 @@ import '../style/calculator.css'
 import HeadSection from "./headSection";
 import ScreenSection from './screenSection';
 import KeySection from './keySection';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
+import { Helmet } from 'react-helmet';
+import ThemeProvider from '../context/themeContext';
+import { ThemeContext } from '../context/themeContext';
+
+const CalculatorWrapper = () => {
+    return (
+        <ThemeProvider>
+            <Calculator />
+        </ThemeProvider>
+    );
+}
 
 const Calculator = () => {
+    const theme = useContext(ThemeContext);
     const [currData, setCurrData] = useState('0');
     const [operation, setOperation] = useState(null);
     const [coma, setComa] = useState(0);
+
+    return (
+        <div className="calculator-body">
+            <Helmet>
+                <style>{"body{ background-color: " + theme.selectedTheme.mainBg + "}"}</style>
+            </Helmet>
+            <HeadSection />
+            <ScreenSection number={currData} />
+            <KeySection click={keypadHandle} />
+        </div>
+    );
 
     function keypadHandle(keypad) {
         if ((Number(keypad) || keypad == '0' || keypad == '-') && ((currData == '0') || ((keypad != '-') && currData.at(currData.length - 1) == '0' && (currData.at(currData.length - 2) == 'x' || currData.at(currData.length - 2) == '/' || currData.at(currData.length - 2) == '+' || currData.at(currData.length - 2) == '-')))) { /* BUAT MASUKIN DATA DARI YANG AWALNYA '0' JADI SUATU NOMOR, TITIK, ATAU KASIH MINUS DIAWAL. DAN JUGA BUAT ANTISIPASI ANGKA NOL SESUDAH OPERASI JADI KEK +07 YANG HARUSNYA JADI 07 */
@@ -94,14 +117,6 @@ const Calculator = () => {
         }
 
     }
-
-    return (
-        <div className="calculator-body">
-            <HeadSection />
-            <ScreenSection number={currData} />
-            <KeySection click={keypadHandle} />
-        </div>
-    );
 }
 
-export default Calculator;
+export default CalculatorWrapper;

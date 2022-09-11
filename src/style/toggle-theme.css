@@ -4,6 +4,10 @@
     align-items: center;
 }
 
+.toggle-container p{
+    cursor: pointer;
+}
+
 .total-theme{
     display: flex;
     gap: 16px;
@@ -13,18 +17,29 @@ p{
     margin: 0%;
 }
 
-.toogle-body{
+.toggle-body{
     width: 4rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     height: 1rem;
     padding: 0.2rem;
     border-radius: 10rem;
     background-color: hsl(223, 31%, 20%);
 }
 
-.toogle{
+.button-toggle{
+    height: 1rem;
+    width: 1.3rem;
+    border: none;
+    margin: 0px;
+    background-color: transparent;
+    border-radius: 10rem;
+}
+
+.toggle{
     width: 1rem;
     height: 1rem;
     border-radius: 100%;
-    background-color: hsl(6, 63%, 50%);
     transition: 0.3s;
 }

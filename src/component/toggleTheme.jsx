@@ -1,6 +1,8 @@
+import { useEffect } from 'react';
+import { useState } from 'react';
 import '../style/toggle-theme.css'
 
-const ToggleTheme = () => {
+const ToggleTheme = ({ theme }) => {
     return (
         <div style={{
             display: "flex", gap: "2rem", alignItems: "flex-end", fontSize: "14px",
@@ -8,24 +10,27 @@ const ToggleTheme = () => {
             <p>THEME</p>
             <div className="toggle-container">
                 <div className="total-theme">
-                    <p>1</p>
-                    <p>2</p>
-                    <p>3</p>
+                    <p onClick={(e) =>{ theme.handleTheme(0)
+                    document.querySelector('.toggle').style.transform = "translateX(0px)"
+                    }}>1</p>
+                    <p onClick={(e) =>{ theme.handleTheme(1)
+                    document.querySelector('.toggle').style.transform = "translateX(24px)"
+                    }}>2</p>
+                    <p onClick={(e) =>{ theme.handleTheme(2)
+                    document.querySelector('.toggle').style.transform = "translateX(48px)"
+                    }}>3</p>
                 </div>
-                <div className='toogle-body' onClick={(e)=>{
-                    let rect = e.target.getBoundingClientRect();
-                    let currPos = 0;
-                    if(e.clientX - rect.left >= 0 && e.clientX - rect.left <= 24){
-                        e.target.querySelector('.toogle').style.transform = `translateX(${currPos = 0}px)`
-                    }else if(e.clientX - rect.left >= 24 && e.clientX - rect.left <= 48){
-                        e.target.querySelector('.toogle').style.transform = `translateX(${currPos = 24}px)`
-                    }else{
-                        e.target.querySelector('.toogle').style.transform = `translateX(${currPos = 48}px)`
-                    }
-                    
-
-                }}>
-                    <div className='toogle'></div>
+                <div style={{ backgroundColor: theme.selectedTheme.toggleAndKeypadBg, position: "relative", overflow: "hidden"}} className='toggle-body'>
+                    <button className='button-toggle' onClick={(e) =>{ theme.handleTheme(0)
+                    document.querySelector('.toggle').style.transform = "translateX(0px)"
+                    }}></button>
+                    <button  className='button-toggle' onClick={(e) =>{ theme.handleTheme(1)
+                   document.querySelector('.toggle').style.transform = "translateX(24px)"
+                    }}></button>
+                    <button  className='button-toggle' onClick={(e) =>{ theme.handleTheme(2)
+                    document.querySelector('.toggle').style.transform = "translateX(48px)"
+                    }}></button>
+                    <div className='toggle' style={{ backgroundColor: theme.selectedTheme.buttonColor[2].buttonBgColor, position: "absolute", top: "0.2rem", left:"0.2rem"}}></div>
                 </div>
             </div>
         </div>
