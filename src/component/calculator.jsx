@@ -17,9 +17,6 @@ const Calculator = () => {
     })
     return (
         <div className="calculator-body">
-            {/* <Helmet>
-                <style>{"body{ background-color: " + theme.selectedTheme.mainBg + "}"}</style>
-            </Helmet> */}
             <HeadSection />
             <ScreenSection number={currData} />
             <KeySection click={keypadHandle} />
