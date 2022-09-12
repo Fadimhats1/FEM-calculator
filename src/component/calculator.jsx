@@ -35,15 +35,27 @@ const Calculator = () => {
         }
         return filtered
     }
+    function filterSpace(number){
+        let filteringSpace = number.split(' ').filter((d) => d != '');
+        let tempNumber = '';
+        filteringSpace.forEach((data) => tempNumber += data);
+        return tempNumber;
+    }
     function keypadHandle(keypad) {
         
         if (currentData.includes(',')) {
-            console.log("masuk0");
+            // console.log("masuk filter ,");
             currentData = filterFormatter(currentData);
-            console.log(currentData);
+            // console.log(currentData);
         }
+
+        if(currentData.includes(' ')){
+            // console.log("masuk filter space");
+            currentData = filterSpace(currentData);
+        }
+
         if ((Number(keypad) || keypad == '0' || keypad == '-') && ((currentData == '0') || ((keypad != '-') && currentData.at(currentData.length - 1) == '0' && (currentData.at(currentData.length - 2) == 'x' || currentData.at(currentData.length - 2) == '/' || currentData.at(currentData.length - 2) == '+' || currentData.at(currentData.length - 2) == '-')))) { /* BUAT MASUKIN DATA DARI YANG AWALNYA '0' JADI SUATU NOMOR, TITIK, ATAU KASIH MINUS DIAWAL. DAN JUGA BUAT ANTISIPASI ANGKA NOL SESUDAH OPERASI JADI KEK +07 YANG HARUSNYA JADI 07 */
-            console.log("masuk1");
+            // console.log("masuk1");
             if (currentData == '0' && keypad == '-') {
                 res = currentData.slice(0, currentData.length - 1).concat(keypad);
             } else {
@@ -51,7 +63,7 @@ const Calculator = () => {
             }
             setCurrData(res)
         } else if (Number(keypad) || keypad == '0') { /* BUAT MASUKIN ANGKA NORMAL 0 - 9 */
-            console.log("masuk2");
+            // console.log("masuk2");
             if (operation && currentData.at(currentData.length - 1) != operation) {
                 let tempNumber = currentData.split(operation).filter((d) => d != '');
                 tempNumber[1] += keypad;
@@ -61,11 +73,11 @@ const Calculator = () => {
                 } else {
                     tempNumber[1] = formatter.format(tempNumber[1]);
                 }
-                res = tempNumber[0] + operation + tempNumber[1];
+                res = tempNumber[0] + ' ' + operation + ' ' + tempNumber[1];
                 setCurrData(res);
             } else if (operation && currentData.at(currentData.length - 1) == operation) {
                 let tempNumber = currentData.split(operation).filter((d) => d != '').map((data) => formatter.format(data));
-                res = tempNumber[0] + operation + formatter.format(keypad);
+                res = tempNumber[0] +  ' ' + operation + ' ' + formatter.format(keypad);
                 setCurrData(res);
             }
             else {
@@ -78,25 +90,28 @@ const Calculator = () => {
                 setCurrData(res);
             }
         } else if (keypad == '.' && ((coma == 0) || (coma == 1 && operation)) && (currentData.at(currentData.length - 1) != 'x' && currentData.at(currentData.length - 1) != '/' && currentData.at(currentData.length - 1) != '+' && currentData.at(currentData.length - 1) != '-')) { /* BUAT NGASIH KOMA */
-            console.log("masuk3");
+            // console.log("masuk3");
             let tempNumber = currentData.split(operation).filter((d) => d != '');
             tempNumber[0] = formatter.format(tempNumber[0])
             if (coma == 0) {
                 res = tempNumber[0].concat(keypad);
             }else{
                 tempNumber[1] = formatter.format(tempNumber[1]).concat(keypad);
-                res = tempNumber[0] + operation + tempNumber[1];
+                res = tempNumber[0] +  ' ' + operation + ' ' + tempNumber[1];
             }
             setCurrData(res);
             setComa(com => com = com + 1);
         } else if ((keypad == 'x' || keypad == '/' || keypad == '+' || keypad == '-') && (!operation || (keypad == '-' && (currentData.at(currentData.length - 1) == 'x' || currentData.at(currentData.length - 1) == '/' || currentData.at(currentData.length - 1) == '+'))) && currentData.at(currentData.length - 1) != '.') { /* BUAT MASUKIN OPERASI */
-            console.log("masuk4");
+            // console.log("masuk4");
             if (currentData.at(currentData.length - 1) != '-') {
                 let filtered = currentData.split(operation).filter((d) => d != '').map((data) => formatter.format(data));
                 if (operation) {
-                    filtered[0] += operation;
+                    res = filtered[0] +=  ' ' + operation + ' ' + keypad;
+                }else {
+                    res = filtered[0] + ' ' + keypad;
                 }
-                res = filtered[0] + keypad;
+
+                
                 setCurrData(res);
             }
             if (operation == null && currentData.at(currentData.length - 1) != '-') {
@@ -106,22 +121,22 @@ const Calculator = () => {
                 setComa(com => com = com + 1); // biar mengelompokkan koma bagian sebelum operasi dan sesudah operasi
             }
         } else if ((keypad == 'x' || keypad == '/' || keypad == '+') && (operation && (currentData.at(currentData.length - 1) == 'x' || currentData.at(currentData.length - 1) == '/' || currentData.at(currentData.length - 1) == '+' || currentData.at(currentData.length - 1) == '-'))) { /* BUAT UBAH OPERASI KEK DARI x TERUS JADI + */
-            console.log("masuk5");
+            // console.log("masuk5");
             if (currentData.at(currentData.length - 1) == operation) {
                 if(currentData.includes('.'))
-                    res = formatComa(currentData.slice(0, currentData.length - 1)).concat(keypad)
+                    res = formatComa(currentData.slice(0, currentData.length - 1)).concat(' ' + keypad)
                 else
-                    res = formatter.format(currentData.slice(0, currentData.length - 1)).concat(keypad);
+                    res = formatter.format(currentData.slice(0, currentData.length - 1)).concat(' ' + keypad);
             } else {
                 if(currentData.includes('.'))
-                    res = formatComa(currentData.slice(0, currentData.length - 2)).concat(keypad + '-')
+                    res = formatComa(currentData.slice(0, currentData.length - 2)).concat(' ' + keypad + ' ' + '-')
                 else
-                    res = formatter.format(currentData.slice(0, currentData.length - 2)).concat(keypad + '-');
+                    res = formatter.format(currentData.slice(0, currentData.length - 2)).concat(' ' + keypad + ' ' + '-');
             }
             setCurrData(res);
             setOperation(keypad);
         } else if (keypad == 'Del' && currentData != '0') { /* BUAT HAPUS DATA YANG ADA 1 PER 1 "DELETE" */
-            console.log("masuk6");
+            // console.log("masuk6");
             if (currentData.at(currentData.length - 1) == operation) {
                 setOperation(null)
                 if(currentData.includes('.')){
@@ -139,26 +154,26 @@ const Calculator = () => {
                 setComa(0)
             } else {
                 let current = currentData.slice(0, currentData.length - 1);
-                let filtered = current.split(operation).filter((d) => d != '').map((data, index) =>{
+                current.split(operation).filter((d) => d != '').map((data, index) =>{
                     res += formatter.format(data) != 'NaN' ? data.includes('.') ? formatComa(data) : formatter.format(data) : data; 
                     if((operation && current.includes(operation))  && index != 1){
-                        res += operation
+                        res += ' ' + operation + ' '
                     }
                 } );
             }
             setCurrData(res);
 
         } else if (keypad == 'Reset') { /* BUAT RESET DATA YANG ADA JADI "0" */
-            console.log("masuk7");
+            // console.log("masuk7");
             setCurrData(current => current = '0')
             setOperation(null)
             setComa(0)
         } else if ((keypad == "=" || keypad == 'x' || keypad == '/' || keypad == '+' || keypad == '-') && operation && (currentData.at(currentData.length - 1) != 'x' && currentData.at(currentData.length - 1) != '/' && currentData.at(currentData.length - 1) != '+' && currentData.at(currentData.length - 1) != '-')) { /* BUAT NGITUNG MENGGUNAKAN DATA YANG ADA */
-            console.log("masuk8");
+            // console.log("masuk8");
             let convert = currentData.split(operation).filter((d) => d != '');
             let equals = 0;
             let convertBack = '';
-            console.log(convert);
+            // console.log(convert);
             if (operation == '-' && currentData.at(0) == '-')
                 convert[0] = '-' + convert[0];
             if (operation == 'x') {
@@ -174,7 +189,7 @@ const Calculator = () => {
             convertBack = formatter.format(equals.toString());
             if (keypad != "=") {
                 setOperation(keypad)
-                convertBack = convertBack + keypad
+                convertBack = convertBack + ' ' + keypad + ' '
             } else {
                 setOperation(null)
             }
